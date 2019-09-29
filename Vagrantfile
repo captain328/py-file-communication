@@ -4,6 +4,8 @@
 Vagrant.configure(2) do |config|
   config.vm.box = "generic/ubuntu1804"
 
+  config.vm.synced_folder ".", "/vagrant"
+
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     # vb.gui = true
@@ -14,6 +16,6 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get update
-    sudo apt-get install -y build-essential vim emacs git
+    sudo apt-get install -y build-essential vim emacs git python3
   SHELL
 end
