@@ -2,6 +2,9 @@
 
 Template for for FIU CNT-4731 Fall 2019 Project 1
 
+# Name, Panther ID
+Kristian Quincosa, Kristian Quincosa
+
 ## Makefile
 
 Provides a `clean` target and `tarball` targets to create the submission file
