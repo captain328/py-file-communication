@@ -24,7 +24,7 @@ if __name__ == '__main__':
     try:
         client_socket.connect((host, port))
     except Exception as e:
-        sys.stderr.write('ERROR: '+str(e))
+        sys.stderr.write('ERROR: ' + str(e))
         sys.exit(CONNECTION_ERROR)
     
     DEBUG and time.sleep(11)

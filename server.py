@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
 
-import sys, argparse, socket, time
+import sys, argparse, socket, time, signal
 from threading import Thread
 
 HOST = '127.0.0.1'
 PORT_BINDING_ERROR = 1
 BUFFER_SIZE = 2048
-DEBUG = True
+DEBUG = False
 
 connection_count = 0
+kill_now = False
+
+def setKill(sig_num, stack_frame):
+    global kill_now
+    time.sleep(1)
+    exit(0)
 
 def handle_connection(connection, ip, port, connection_id, save_dir):
     
@@ -45,7 +51,10 @@ if __name__ == '__main__':
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     port = args.port
     save_path = args.path
-    
+
+    signal.signal(signal.SIGINT, setKill)
+    signal.signal(signal.SIGTERM, setKill)
+
     try:
         server_socket.bind((HOST, port))
     except Exception as e:
@@ -55,7 +64,7 @@ if __name__ == '__main__':
     server_socket.listen(5)
     
     sys.stdout.write("Waiting for connections\n")
-    while True:
+    while not kill_now:
         connection, address = server_socket.accept()
         ip, port = str(address[0]), str(address[1])
         DEBUG and print(f'connection from {ip}:{port}')
