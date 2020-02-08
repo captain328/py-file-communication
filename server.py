@@ -6,24 +6,36 @@ from threading import Thread
 HOST = '127.0.0.1'
 PORT_BINDING_ERROR = 1
 BUFFER_SIZE = 2048
+DEBUG = True
 
 connection_count = 0
 
 def handle_connection(connection, ip, port, connection_id, save_dir):
+    
+    DEBUG and print('handling connection: ', ip, port, connection_id, save_dir)    
+    
     dest_file_path = f"{save_dir}/{connection_id}.file"
     f_dest = open(dest_file_path, 'wb')
+    
+    DEBUG and print('dest file path: ', f_dest)
     connection.settimeout(10)
+    input_data = None
     try:
         input_data = connection.recv(BUFFER_SIZE)
     except Exception as e:
+        DEBUG and print('recv exception: ', str(e))
         f_dest.write(b'ERROR')
+    
     while input_data:
         f_dest.write(input_data)
         if len(input_data) < BUFFER_SIZE:
             break
         input_data = connection.recv(BUFFER_SIZE)
+    
     f_dest.close()
     connection.close()
+    
+    DEBUG and print('closing connection handler')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='File Server')
@@ -42,13 +54,15 @@ if __name__ == '__main__':
 
     server_socket.listen(5)
     
+    sys.stdout.write("Waiting for connections\n")
     while True:
-        sys.stdout.write("Waiting for connections\n")
         connection, address = server_socket.accept()
         ip, port = str(address[0]), str(address[1])
+        DEBUG and print(f'connection from {ip}:{port}')
         connection_count = connection_count + 1
         try:
-            Thread(target=handle_connection, args=(connection, ip, port)).start()
+            Thread(target=handle_connection, args=(connection, ip, port, connection_count, save_path)).start()
         except Exception as e:
             sys.stderr.write("ERROR: " + str(e))
+            DEBUG and print('exception in creating thread: ', str(e))
     soc.close()
