@@ -5,7 +5,7 @@ import sys, socket, time, argparse
 CONNECTION_ERROR = 1
 BUFFER_SIZE = 2048
 
-DEBUG = True
+DEBUG = False
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='File Client')
