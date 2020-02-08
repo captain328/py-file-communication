@@ -27,8 +27,8 @@ def handle_connection(connection, ip, port, connection_id, save_dir):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='File Server')
-    parser.add_argument('port', type=int, help='listening port')
-    parser.add_argument('path', type=str, help='file save directory')
+    parser.add_argument('port', metavar='PORT', type=int, help='listening port')
+    parser.add_argument('path', metavar='FILE-DIR', type=str, help='file save directory')
     args = parser.parse_args()
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     port = args.port
