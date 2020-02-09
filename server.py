@@ -32,10 +32,9 @@ def handle_connection(connection, ip, port, connection_id, save_dir):
         DEBUG and print('recv exception: ', str(e))
         f_dest.write(b'ERROR')
     
+    connection.settimeout(1)
     while input_data:
         f_dest.write(input_data)
-        if len(input_data) < BUFFER_SIZE:
-            break
         input_data = connection.recv(BUFFER_SIZE)
     
     f_dest.close()

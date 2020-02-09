@@ -1,31 +1,43 @@
-# CNT-4731 Project 1
+# High Level Design
 
-Template for for FIU CNT-4731 Fall 2019 Project 1
+## Server Program
 
-# Name, Panther ID
-Kristian Quincosa, 5309509
+The server program consists of 2 main parts.
 
-## Makefile
+* Main loop for accepting incoming connections
+  
+    Waits for client connections infinitely until SIGKILL or SIGTERM signal.
 
-Provides a `clean` target and `tarball` targets to create the submission file
+    Once a connection has arrived it makes a thread for handling data stream.
 
-    make clean
-    make tarball
+* Data stream handler
+  
+    Read data from the client and write to
 
-You will need to modify the `Makefile` to add your userid for the `.tar.gz` turn-in at the top of the file.
+## Client Program
 
-## Academic Integrity Note
+The client program is a simple flow.
 
-You are encouraged to host your code in private repositories on [GitHub](https://github.com/), [GitLab](https://gitlab.com), or other places.  At the same time, you are PROHIBITED to make your code for the class project public during the class or any time after the class.  If you do so, you will be violating academic honestly policy that you have signed, as well as the student code of conduct and be subject to serious sanctions.
+Connects to the server with a given host and port.
 
-## Provided Files
+Use a buffer to send data to the server.
 
-`server.py` and `client.py` are the entry points for the server and client part of the project.
+# Problems and Issues
 
-## TODO
+* handling SIGNTERM, SIGKILL signals
+  
+  I referenced the following StackOverflow article to solve this issue.
 
-    ###########################################################
-    ##                                                       ##
-    ## REPLACE CONTENT OF THIS FILE WITH YOUR PROJECT REPORT ##
-    ##                                                       ##
-    ###########################################################
+  https://stackoverflow.com/questions/18499497/how-to-process-sigterm-signal-gracefully
+  
+* Argument parsing
+
+  I referenced the following python manual to parse arguments.
+
+  https://docs.python.org/3/library/argparse.html
+
+# Additional Modules
+
+* argparse
+* signal
+* threading
